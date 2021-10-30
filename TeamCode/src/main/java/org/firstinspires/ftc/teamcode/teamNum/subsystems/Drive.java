@@ -6,6 +6,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.lib.drivers.Motors;
 import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
+import org.firstinspires.ftc.teamcode.teamNum.Constants;
+import org.firstinspires.ftc.teamcode.teamNum.states.DriveMode;
+
+import java.util.Arrays;
 
 public class Drive implements Subsystem {
 
@@ -111,6 +115,35 @@ public class Drive implements Subsystem {
             setDriveMotors(0);
             return true;
         }
+    }
+
+    /**
+     * Mecanum Drive Control
+     * @param y Forward/Backward Force (GamePad Left Stick y)
+     * @param x Left/Right (Strafe) Force (GamePad Left Stick x)
+     * @param turn Rotational Force (GamePad Right Stick x)
+     * @param mode Drivetrain Speed Setting (Sport, Normal, Economy)
+     */
+    public void POVMecanumDrive(double y, double x, double turn, DriveMode mode) {
+        turn *= 0.5; //Custom reduction bc it was requested.
+        double v1 = -(y - (turn * Constants.strafeScaling) - (x/Constants.turnScaling));
+        double v2 = -(y - (turn * Constants.strafeScaling) + (x/Constants.turnScaling));
+        double v3 = -(y + (turn * Constants.strafeScaling) - (x/Constants.turnScaling));
+        double v4 = -(y + (turn * Constants.strafeScaling) + (x/Constants.turnScaling));
+
+        Double[] v = new Double[]{Math.abs(v1), Math.abs(v2), Math.abs(v3), Math.abs(v4)};
+        Arrays.sort(v);
+        if (v[3] > 1) {
+            v1 /= v[3];
+            v2 /= v[3];
+            v3 /= v[3];
+            v4 /= v[3];
+        }
+
+        fl.setPower(v1 * mode.getScaling());
+        bl.setPower(v2 * mode.getScaling());
+        br.setPower(v3 * mode.getScaling());
+        fr.setPower(v4 * mode.getScaling());
     }
     
 }

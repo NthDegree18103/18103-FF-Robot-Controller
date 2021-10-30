@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.teamNum.subsystems.Subsystem;
 public class Robot extends OpMode {
 
     double dt = 0.01;
-    ElapsedTime timer;
+    ElapsedTime timer = new ElapsedTime();
 
     Subsystem[] subsystems;
 
@@ -37,8 +37,8 @@ public class Robot extends OpMode {
     @Override
     public void init() {
         initDrive();
-        initStateEstimator();
-        subsystems = new Subsystem[]{estimator, drive};
+        //initStateEstimator();
+        subsystems = new Subsystem[]{/*estimator,*/ drive};
     }
 
     @Override
