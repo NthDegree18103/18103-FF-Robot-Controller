@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teamNum;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.VV;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.teamNum.subsystems.Spinner;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.StateEstimator;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Subsystem;
 
@@ -21,9 +23,10 @@ public class Robot extends OpMode {
 
     Subsystem[] subsystems;
 
-    DcMotorEx fl, fr, bl, br;
+    DcMotorEx fl, fr, bl, br, spin;
     DcMotorEx[] driveMotors;
     Drive drive;
+    Spinner spinner;
     Profile currDriveProfile;
     double targetPos = 0;
     double tolerance = 2.5;
@@ -37,8 +40,9 @@ public class Robot extends OpMode {
     @Override
     public void init() {
         initDrive();
+        initSpinner();
         //initStateEstimator();
-        subsystems = new Subsystem[]{/*estimator,*/ drive};
+        subsystems = new Subsystem[]{/*estimator,*/ drive, spinner};
     }
 
     @Override
@@ -69,7 +73,14 @@ public class Robot extends OpMode {
         }
 
         drive = new Drive(fl, fr, bl, br);
+    }
 
+    public void initSpinner() {
+        spin = hardwareMap.get(DcMotorEx.class, "spin");
+
+        spin.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        spinner = new Spinner(spin);
     }
 
     public void initStateEstimator() {
@@ -92,6 +103,10 @@ public class Robot extends OpMode {
 
     public Drive getDrive() {
         return drive;
+    }
+
+    public Spinner getSpinner() {
+        return spinner;
     }
 
     public boolean followPath(Profile profile) {
