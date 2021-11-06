@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teamNum.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.drivers.Motors;
 import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
@@ -26,7 +27,7 @@ public class Drive implements Subsystem {
     }
 
     @Override
-    public void update(double dt) {
+    public void update(double dt, Telemetry telemetry) {
 
     }
 

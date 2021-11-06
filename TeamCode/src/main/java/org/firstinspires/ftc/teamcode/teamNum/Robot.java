@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.VV;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.teamNum.subsystems.IntakeOuttake;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Spinner;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.StateEstimator;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Subsystem;
@@ -23,10 +24,11 @@ public class Robot extends OpMode {
 
     Subsystem[] subsystems;
 
-    DcMotorEx fl, fr, bl, br, spin;
+    DcMotorEx fl, fr, bl, br, spin, intake;
     DcMotorEx[] driveMotors;
     Drive drive;
     Spinner spinner;
+    IntakeOuttake io;
     Profile currDriveProfile;
     double targetPos = 0;
     double tolerance = 2.5;
@@ -40,9 +42,10 @@ public class Robot extends OpMode {
     @Override
     public void init() {
         initDrive();
+        initIO();
         initSpinner();
         //initStateEstimator();
-        subsystems = new Subsystem[]{/*estimator,*/ drive, spinner};
+        subsystems = new Subsystem[]{/*estimator,*/ drive, io, spinner};
     }
 
     @Override
@@ -50,7 +53,7 @@ public class Robot extends OpMode {
         dt = timer.seconds();
         timer.reset();
         for (Subsystem system: subsystems) {
-            system.update(getDt());
+            system.update(getDt(), telemetry);
         }
     }
 
@@ -83,6 +86,14 @@ public class Robot extends OpMode {
         spinner = new Spinner(spin);
     }
 
+    public void initIO() {
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+
+        //intake.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        io = new IntakeOuttake(intake);
+    }
+
     public void initStateEstimator() {
         estimator = new StateEstimator(new IMU(hardwareMap.get(BNO055IMU.class, "imu")),
                                         new MKE(fl, fr, bl, br),
@@ -107,6 +118,10 @@ public class Robot extends OpMode {
 
     public Spinner getSpinner() {
         return spinner;
+    }
+
+    public IntakeOuttake getIo() {
+        return io;
     }
 
     public boolean followPath(Profile profile) {
