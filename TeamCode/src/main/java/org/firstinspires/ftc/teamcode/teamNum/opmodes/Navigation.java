@@ -1,15 +1,22 @@
 package org.firstinspires.ftc.teamcode.teamNum.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.drivers.Motors;
+import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
+import org.firstinspires.ftc.teamcode.teamNum.Constants;
 import org.firstinspires.ftc.teamcode.teamNum.Robot;
+import org.firstinspires.ftc.teamcode.teamNum.subsystems.WalmartStateEstimator;
 
 @Autonomous
 public class Navigation extends Robot {
 
     int pathStep = 0;
+    ElapsedTime timer = new ElapsedTime();
+    double setPoint = -42/Constants.drivePIDMagicNumber, tolerance = 0, kp = 1, kv = 1/Motors.GoBILDA_312.getSurfaceVelocity(2), ka = .01;
+    Profile profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
 
     @Override
     public void init() {
@@ -19,36 +26,49 @@ public class Navigation extends Robot {
     @Override
     public void loop() {
         super.loop();
-        switch (pathStep) {
-            case 0:
-                if(followPath(new TrapezoidalMotionProfile(48,
-                        Motors.GoBILDA_312.getSurfaceVelocity(2), 100d))) {
-                    pathStep++;
-                }
-            case 1:
-                /*if (currDriveProfile == null) {
-                    currDriveProfile = new TrapezoidalMotionProfile(48, MotorModel.GoBILDA_312.getSurfaceVelocity(2), 100d);
-                    targetPos = getEstimator().getY() + 48;
-                }
-                if (Math.abs(targetPos - getEstimator().getY()) > tolerance) {
-                    driveTime += getDt();
-                    double Pe = currDriveProfile.getPosition(driveTime) - getEstimator().getY();
-                    double Ve = currDriveProfile.getVelocity(driveTime) - getEstimator().getY_dot();
-                    double Ae = currDriveProfile.getAcceleration(driveTime) - getEstimator().getY_dDot();
-                    double u = kp * Pe + kv * Ve + ka * Ae;
-                    getDrive().setDriveMotors(u);
-                }
-                getDrive().setDriveMotors(0);
-                 */
-                if(followPath(new TrapezoidalMotionProfile(48,
-                        Motors.GoBILDA_312.getSurfaceVelocity(2), 100d))) {
-                    pathStep++;
-                }
-            case 3:
-                if(followPath(new TrapezoidalMotionProfile(-48*2,
-                        Motors.GoBILDA_312.getSurfaceVelocity(2), 100d))) {
-                    pathStep++;
-                }
+        if (pathStep == 0) {
+            telemetry.addData("Error", (setPoint + super.getEstimator().getY()));
+            if (setPoint + super.getEstimator().getY() < tolerance) {
+                double Pe = profile.getPosition(time) + super.getEstimator().getY();
+                double Ve = profile.getVelocity(time) + super.getEstimator().getY_dot();
+                double Ae = profile.getAcceleration(time) + super.getEstimator().getY_dDot();
+                double u = kp * Pe + kv * Ve + ka * Ae;
+                super.getDrive().setDriveMotors(u);
+            } else {
+                super.getDrive().setDriveMotors(0);
+                pathStep++;
+                timer.reset();
+            }
+        }
+        else if (pathStep == 1) {
+            if (timer.seconds() < 3) {
+                super.getSpinner().setSpin(0.5);
+            } else {
+                pathStep++;
+                telemetry.addData("PathStep", (pathStep));
+                telemetry.update();
+                setPoint = (150) / Constants.drivePIDMagicNumber;
+                profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
+                super.getSpinner().spin(0);
+            }
+        }
+        else if (pathStep == 2) {
+            telemetry.addData("Error", (setPoint - super.getEstimator().getY()));
+            if (setPoint - super.getEstimator().getY() > tolerance) {
+                double Pe = profile.getPosition(time) - super.getEstimator().getY();
+                double Ve = profile.getVelocity(time) - super.getEstimator().getY_dot();
+                double Ae = profile.getAcceleration(time) - super.getEstimator().getY_dDot();
+                double u = kp * Pe + kv * Ve + ka * Ae;
+                super.getDrive().setDriveMotors(u);
+            } else {
+                super.getDrive().setDriveMotors(0);
+                pathStep++;
+                timer.reset();
+            }
+        }
+        else {
+            super.getSpinner().spin(0);
+            super.getDrive().setDriveMotors(0);
         }
     }
 

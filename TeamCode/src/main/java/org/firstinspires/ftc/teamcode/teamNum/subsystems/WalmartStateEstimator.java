@@ -7,60 +7,38 @@ import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.VV;
 
-public class StateEstimator implements Subsystem, State {
+public class WalmartStateEstimator extends StateEstimator implements Subsystem, State {
 
-    IMU imu;
-    MKE mke;
-    VV vv;
-    double x, y, theta, xBias, yBias, thetaBias, x_dot, y_dot;
-
-    public StateEstimator(IMU imu, MKE mke, VV vv) {
-        this.imu = imu;
-        this.mke = mke;
-        this.vv = vv;
-        xBias = 0;
-        yBias = 0;
-        thetaBias = 0;
-        x_dot = 0;
-        y_dot = 0;
-        updatePos();
+    public WalmartStateEstimator(IMU imu, MKE mke) {
+        super(imu, mke, null);
     }
 
-    public StateEstimator(IMU imu, MKE mke, VV vv, double x, double y, double theta) {
-        this.imu = imu;
-        this.mke = mke;
-        this.vv = vv;
-        xBias = x;
-        yBias = y;
-        thetaBias = theta;
-        x_dot = 0;
-        y_dot = 0;
-        updatePos();
+    public WalmartStateEstimator(IMU imu, MKE mke, double x, double y, double theta) {
+        super(imu, mke, null, x, y, theta);
     }
 
     @Override
     public void update(double dt, Telemetry telemetry) {
         imu.update(dt, telemetry);
         mke.update(dt, telemetry);
-        vv.update(dt, telemetry);
         updatePos();
     }
 
     public void updatePos() {
-        x = MathFx.meanDataFusion(new double[]{imu.getX(), mke.getX(), vv.getX()},
-                                    new double[]{1, 1, 1}, xBias);
+        x = MathFx.meanDataFusion(new double[]{imu.getX(), mke.getX()},
+                                    new double[]{1, 1}, xBias);
 
-        y = MathFx.meanDataFusion(new double[]{imu.getY(), mke.getY(), vv.getY()},
-                                    new double[]{1, 1, 1}, yBias);
+        y = MathFx.meanDataFusion(new double[]{imu.getY(), mke.getY()},
+                                    new double[]{1, 1}, yBias);
 
-        theta = MathFx.meanDataFusion(new double[]{imu.getTheta(), mke.getTheta(), vv.getTheta()},
-                                    new double[]{1, 1, 1}, thetaBias);
+        theta = MathFx.meanDataFusion(new double[]{imu.getTheta(), mke.getTheta()},
+                                    new double[]{1, 1}, thetaBias);
 
-        x_dot = MathFx.meanDataFusion(new double[]{imu.getX_dot(), mke.getX_dot(), vv.getX_dot()},
-                new double[]{1, 1, 1}, 0);
+        x_dot = MathFx.meanDataFusion(new double[]{imu.getX_dot(), mke.getX_dot()},
+                new double[]{1, 1}, 0);
 
-        y_dot = MathFx.meanDataFusion(new double[]{imu.getY_dot(), mke.getY_dot(), vv.getY_dot()},
-                new double[]{1, 1, 1}, 0);
+        y_dot = MathFx.meanDataFusion(new double[]{imu.getY_dot(), mke.getY_dot()},
+                new double[]{1, 1}, 0);
 
     }
 

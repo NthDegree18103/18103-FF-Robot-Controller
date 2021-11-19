@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.teamNum.Constants.mmTargetHeight;
 import static org.firstinspires.ftc.teamcode.teamNum.Constants.quadField;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -116,7 +117,7 @@ public class VV extends DriveState {
     }
 
     @Override
-    public void update(double dt) {
+    public void update(double dt, Telemetry telemetry) {
         updateRobotLocation(dt);
     }
 

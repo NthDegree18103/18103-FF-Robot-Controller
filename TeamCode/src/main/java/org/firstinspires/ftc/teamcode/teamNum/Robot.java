@@ -6,16 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
-import org.firstinspires.ftc.teamcode.teamNum.states.drive.VV;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.IntakeOuttake;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Spinner;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.StateEstimator;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Subsystem;
+import org.firstinspires.ftc.teamcode.teamNum.subsystems.WalmartStateEstimator;
 
 public class Robot extends OpMode {
 
@@ -28,7 +26,8 @@ public class Robot extends OpMode {
     DcMotorEx[] driveMotors;
     Drive drive;
     Spinner spinner;
-    IntakeOuttake io;
+    //IntakeOuttake io;
+    WalmartStateEstimator estimator;
     Profile currDriveProfile;
     double targetPos = 0;
     double tolerance = 2.5;
@@ -37,15 +36,13 @@ public class Robot extends OpMode {
     double ka = 0;
     double driveTime = 0;
 
-    StateEstimator estimator;
-
     @Override
     public void init() {
         initDrive();
-        initIO();
+        //initIO();
         initSpinner();
-        //initStateEstimator();
-        subsystems = new Subsystem[]{/*estimator,*/ drive, io, spinner};
+        initStateEstimator();
+        subsystems = new Subsystem[]{estimator, drive, /*io,*/ spinner};
     }
 
     @Override
@@ -87,20 +84,16 @@ public class Robot extends OpMode {
     }
 
     public void initIO() {
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        //intake = hardwareMap.get(DcMotorEx.class, "intake");
 
         //intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        io = new IntakeOuttake(intake);
+        //io = new IntakeOuttake(intake);
     }
 
     public void initStateEstimator() {
-        estimator = new StateEstimator(new IMU(hardwareMap.get(BNO055IMU.class, "imu")),
-                                        new MKE(fl, fr, bl, br),
-                                        new VV(hardwareMap.get(WebcamName.class, "Webcam"),
-                                                hardwareMap.appContext.getResources().getIdentifier(
-                                                "cameraMonitorViewId", "id",
-                                                        hardwareMap.appContext.getPackageName())));
+        estimator = new WalmartStateEstimator(new IMU(hardwareMap.get(BNO055IMU.class, "imu")),
+                                        new MKE(fl, fr, bl, br));
         timer = new ElapsedTime();
     }
 
@@ -108,7 +101,7 @@ public class Robot extends OpMode {
         return dt;
     }
 
-    public StateEstimator getEstimator() {
+    public WalmartStateEstimator getEstimator() {
         return estimator;
     }
 
@@ -120,9 +113,9 @@ public class Robot extends OpMode {
         return spinner;
     }
 
-    public IntakeOuttake getIo() {
+    /*public IntakeOuttake getIo() {
         return io;
-    }
+    }*/
 
     public boolean followPath(Profile profile) {
         if (currDriveProfile == null) {

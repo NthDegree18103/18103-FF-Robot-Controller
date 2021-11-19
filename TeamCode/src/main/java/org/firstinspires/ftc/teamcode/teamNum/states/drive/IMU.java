@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teamNum.states.drive;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -140,7 +141,7 @@ public class IMU extends DriveState {
     }
 
     @Override
-    public void update(double dt) {
+    public void update(double dt, Telemetry telemetry) {
         integrate(dt);
     }
 

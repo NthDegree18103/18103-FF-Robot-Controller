@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teamNum.states.drive;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.drivers.Motors;
 import org.firstinspires.ftc.teamcode.lib.util.MathFx;
 import org.firstinspires.ftc.teamcode.lib.util.Matrix;
@@ -54,7 +55,7 @@ public class MKE extends DriveState {
      * MKESim.java Tested
      */
     @Override
-    public void update(double dt) {
+    public void update(double dt, Telemetry telemetry) {
         double fl_1 = fl.getCurrentPosition() - fl_0;
         double fr_1 = fr.getCurrentPosition() - fr_0;
         double bl_1 = bl.getCurrentPosition() - bl_0;

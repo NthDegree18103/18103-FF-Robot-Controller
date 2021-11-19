@@ -21,4 +21,8 @@ public class Spinner implements Subsystem {
         spinner.setPower(pow);
     }
 
+    public void setSpin(double pow) {
+        spinner.setPower(Math.min(pow, 0.5));
+    }
+
 }

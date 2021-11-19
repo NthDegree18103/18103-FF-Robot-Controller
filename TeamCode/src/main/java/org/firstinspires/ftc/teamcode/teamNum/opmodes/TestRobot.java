@@ -17,7 +17,7 @@ public class TestRobot extends Robot {
         super.loop();
         super.getDrive().POVMecanumDrive(gamepad1.left_stick_y, gamepad1.left_stick_x,
                 gamepad1.right_stick_x, DriveMode.Sport);
-        super.getSpinner().spin(gamepad1.right_stick_y);
+        super.getSpinner().setSpin(gamepad1.left_trigger);
         //super.getIo().runIntake(0);
     }
 }
