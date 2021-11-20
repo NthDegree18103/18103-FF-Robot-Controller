@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teamNum.opmodes;
+package org.firstinspires.ftc.teamcode.teamNum.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.teamNum.Robot;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.WalmartStateEstimator;
 
 @Autonomous
-public class Navigation extends Robot {
+public class Delivery extends Robot {
 
     int pathStep = 0;
     ElapsedTime timer = new ElapsedTime();
