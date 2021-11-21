@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
 import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
+import org.firstinspires.ftc.teamcode.teamNum.states.drive.RotatedIMU;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.IntakeOuttake;
 import org.firstinspires.ftc.teamcode.teamNum.subsystems.Spinner;
@@ -93,7 +94,7 @@ public class Robot extends OpMode {
     }
 
     public void initStateEstimator() {
-        estimator = new WalmartStateEstimator(new IMU(hardwareMap.get(BNO055IMU.class, "imu")),
+        estimator = new WalmartStateEstimator(new RotatedIMU(hardwareMap.get(BNO055IMU.class, "imu")),
                                         new MKE(fl, fr, bl, br));
         timer = new ElapsedTime();
     }

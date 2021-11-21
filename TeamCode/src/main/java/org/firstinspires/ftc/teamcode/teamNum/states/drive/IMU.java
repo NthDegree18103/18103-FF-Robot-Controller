@@ -20,11 +20,11 @@ public class IMU extends DriveState {
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
-    private double lastAccelX = 0.0;
-    private double lastAccelY = 0.0;
-    private double currAccelX = 0.0;
-    private double currAccelY = 0.0;
-    private double x, y, x_dot, y_dot, theta;
+    double lastAccelX = 0.0;
+    double lastAccelY = 0.0;
+    double currAccelX = 0.0;
+    double currAccelY = 0.0;
+    double x, y, x_dot, y_dot, theta;
 
     public IMU(BNO055IMU imu) {
         this.imu = imu;
@@ -143,6 +143,7 @@ public class IMU extends DriveState {
     @Override
     public void update(double dt, Telemetry telemetry) {
         integrate(dt);
+        getTheta();
     }
 
 
@@ -174,4 +175,19 @@ public class IMU extends DriveState {
 
     public double getY_dDot() {return currAccelY;}
 
+    public double getLastAccelX() {
+        return lastAccelX;
+    }
+
+    public void setLastAccelX(double lastAccelX) {
+        this.lastAccelX = lastAccelX;
+    }
+
+    public double getLastAccelY() {
+        return lastAccelY;
+    }
+
+    public void setLastAccelY(double lastAccelY) {
+        this.lastAccelY = lastAccelY;
+    }
 }
