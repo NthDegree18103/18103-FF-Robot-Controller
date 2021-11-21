@@ -22,6 +22,9 @@ public class WalmartStateEstimator extends StateEstimator implements Subsystem, 
         imu.update(dt, telemetry);
         mke.update(dt, telemetry);
         updatePos();
+        telemetry.addData("x", getX());
+        telemetry.addData("y", getY());
+        telemetry.addData("a", getTheta());
     }
 
     public void updatePos() {

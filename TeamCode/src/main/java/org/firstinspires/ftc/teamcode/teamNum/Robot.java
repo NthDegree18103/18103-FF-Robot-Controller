@@ -26,7 +26,7 @@ public class Robot extends OpMode {
     DcMotorEx[] driveMotors;
     Drive drive;
     Spinner spinner;
-    //IntakeOuttake io;
+    IntakeOuttake io;
     WalmartStateEstimator estimator;
     Profile currDriveProfile;
     double targetPos = 0;
@@ -39,10 +39,10 @@ public class Robot extends OpMode {
     @Override
     public void init() {
         initDrive();
-        //initIO();
+        initIO();
         initSpinner();
         initStateEstimator();
-        subsystems = new Subsystem[]{estimator, drive, /*io,*/ spinner};
+        subsystems = new Subsystem[]{estimator, drive, io, spinner};
     }
 
     @Override
@@ -52,6 +52,7 @@ public class Robot extends OpMode {
         for (Subsystem system: subsystems) {
             system.update(getDt(), telemetry);
         }
+        telemetry.update();
     }
 
     public void initDrive() {
@@ -84,11 +85,11 @@ public class Robot extends OpMode {
     }
 
     public void initIO() {
-        //intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
 
-        //intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //io = new IntakeOuttake(intake);
+        io = new IntakeOuttake(intake);
     }
 
     public void initStateEstimator() {
@@ -113,9 +114,9 @@ public class Robot extends OpMode {
         return spinner;
     }
 
-    /*public IntakeOuttake getIo() {
+    public IntakeOuttake getIo() {
         return io;
-    }*/
+    }
 
     public boolean followPath(Profile profile) {
         if (currDriveProfile == null) {
