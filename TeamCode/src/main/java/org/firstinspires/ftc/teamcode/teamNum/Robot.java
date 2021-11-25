@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.motion.Profile;
@@ -26,6 +27,7 @@ public class Robot extends OpMode {
     DcMotorEx fl, fr, bl, br, spin, intake;
     DcMotorEx[] driveMotors;
     Drive drive;
+    Servo servoTest;
     Spinner spinner;
     IntakeOuttake io;
     WalmartStateEstimator estimator;
@@ -87,6 +89,7 @@ public class Robot extends OpMode {
 
     public void initIO() {
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        servoTest = hardwareMap.get(Servo.class, "servoTest");
 
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
