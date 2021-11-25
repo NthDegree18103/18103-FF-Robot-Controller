@@ -93,7 +93,7 @@ public class Robot extends OpMode {
 
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        io = new IntakeOuttake(intake);
+        io = new IntakeOuttake(intake, servoTest);
     }
 
     public void initStateEstimator() {

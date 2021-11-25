@@ -11,14 +11,15 @@ public class IntakeOuttake implements Subsystem {
     DcMotorEx intake;
     Servo servoTest;
 
-    public IntakeOuttake(DcMotorEx intake) {
+    public IntakeOuttake(DcMotorEx intake, Servo servoTest) {
         this.intake = intake;
+        this.servoTest = servoTest;
     }
 
     @Override
     public void update(double dt, Telemetry telemetry) {
         telemetry.addData("Intake", intake.getPower());
-        telemetry.addData("servo position", servoTest.getPosition());
+        //telemetry.addData("servo position", servoTest.getPosition());
     }
 
     public void runIntake(double pow) {
