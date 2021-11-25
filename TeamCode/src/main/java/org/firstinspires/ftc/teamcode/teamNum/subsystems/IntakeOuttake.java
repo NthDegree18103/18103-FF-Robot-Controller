@@ -18,6 +18,7 @@ public class IntakeOuttake implements Subsystem {
     @Override
     public void update(double dt, Telemetry telemetry) {
         telemetry.addData("Intake", intake.getPower());
+        telemetry.addData("servo position", servoTest.getPosition());
     }
 
     public void runIntake(double pow) {
