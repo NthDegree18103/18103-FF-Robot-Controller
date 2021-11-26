@@ -19,6 +19,14 @@ public class TestRobot extends Robot {
                 gamepad1.right_stick_x, DriveMode.Sport);
         super.getSpinner().setSpin(gamepad1.left_trigger);
         super.getIo().runIntake(gamepad1.right_stick_y);
+        //start intake rts
+        if (gamepad1.left_bumper){
+            super.getIo().runDownIntake();
+        }
+        else if (gamepad1.right_bumper){
+            super.getIo().runUpIntake();
+        }
+        //start servo
         if (gamepad1.y) {
             super.getIo().runServoLeft();
         }
