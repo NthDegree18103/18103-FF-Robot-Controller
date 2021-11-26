@@ -26,8 +26,8 @@ public class IntakeOuttake implements Subsystem {
         intake.setPower(pow);
     }
 
-    public void runUpIntake() {intake.setPower(0.25);} //rts
-    public void runDownIntake() {intake.setPower(-0.25);} //rts
+    public void runUpIntake() {intake.setPower(0.5);} //rts
+    public void runDownIntake() {intake.setPower(-0.5);} //rts
 
     public void runServoRight() {
         servoTest.setPosition(0.6);
