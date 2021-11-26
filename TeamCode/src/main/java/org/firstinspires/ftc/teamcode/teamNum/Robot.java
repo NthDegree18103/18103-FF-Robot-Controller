@@ -92,6 +92,7 @@ public class Robot extends OpMode {
         servoTest = hardwareMap.get(Servo.class, "servoTest");
 
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE); //add per ftc reddit
 
         io = new IntakeOuttake(intake, servoTest);
     }
