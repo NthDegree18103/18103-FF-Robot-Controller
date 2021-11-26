@@ -30,11 +30,11 @@ public class IntakeOuttake implements Subsystem {
     public void runDownIntake() {intake.setPower(-0.75);} //rts
 
     public void runServoRight() {
-        servoTest.setPosition(0.6);
+        servoTest.setPosition(0.8);
     } // tyler
 
     public void runServoMid() {
-        servoTest.setPosition(0.8);
+        servoTest.setPosition(0.9);
     }
 
     public void runServoLeft() {
