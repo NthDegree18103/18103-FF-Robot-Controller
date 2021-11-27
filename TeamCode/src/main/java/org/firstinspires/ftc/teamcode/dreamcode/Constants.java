@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.teamNum;
+package org.firstinspires.ftc.teamcode.dreamcode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.teamcode.lib.util.MathFx;
 
 public final class Constants {
     // Drive Subsystem
-    public static final double L = 18d; // Wheel Base Separation (in)
+    public static final double L = 13.5d; // Wheel Base Separation (in)
     public static final double R = 2d; // Drive Wheel Radius (in)
     public static final double COLLISION_THRESHOLD_DELTA_G = 0.5;
 
@@ -29,6 +29,6 @@ public final class Constants {
 
     public static double turnScaling = 1;
     public static double strafeScaling = 1.5;
-    public static final double drivePIDMagicNumber = 9.2;
+    //public static final double drivePIDMagicNumber = 9.2;
 
 }

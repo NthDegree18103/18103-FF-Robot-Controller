@@ -1,51 +1,36 @@
-package org.firstinspires.ftc.teamcode.teamNum;
+package org.firstinspires.ftc.teamcode.dreamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.lib.motion.Profile;
-import org.firstinspires.ftc.teamcode.teamNum.states.drive.IMU;
-import org.firstinspires.ftc.teamcode.teamNum.states.drive.MKE;
-import org.firstinspires.ftc.teamcode.teamNum.states.drive.RotatedIMU;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.Drive;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.IntakeOuttake;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.Spinner;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.Subsystem;
-import org.firstinspires.ftc.teamcode.teamNum.subsystems.WalmartStateEstimator;
+import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Drive;
+import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.IntakeOuttake;
+import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Spinner;
+import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Subsystem;
 
 public class Robot extends OpMode {
-
-    double dt = 0.01;
-    ElapsedTime timer = new ElapsedTime();
 
     Subsystem[] subsystems;
 
     DcMotorEx fl, fr, bl, br, spin, intake;
+    Servo servoTest;
     DcMotorEx[] driveMotors;
     Drive drive;
-    Servo servoTest;
     Spinner spinner;
     IntakeOuttake io;
-    WalmartStateEstimator estimator;
-    Profile currDriveProfile;
-    double targetPos = 0;
-    double tolerance = 2.5;
-    double kp = 0;
-    double kv = 0;
-    double ka = 0;
-    double driveTime = 0;
+
+    ElapsedTime timer;
+    double dt;
 
     @Override
     public void init() {
         initDrive();
         initIO();
         initSpinner();
-        initStateEstimator();
-        subsystems = new Subsystem[]{estimator, drive, io, spinner};
+        subsystems = new Subsystem[]{drive, io, spinner};
     }
 
     @Override
@@ -97,18 +82,8 @@ public class Robot extends OpMode {
         io = new IntakeOuttake(intake, servoTest);
     }
 
-    public void initStateEstimator() {
-        estimator = new WalmartStateEstimator(new RotatedIMU(hardwareMap.get(BNO055IMU.class, "imu")),
-                                        new MKE(fl, fr, bl, br));
-        timer = new ElapsedTime();
-    }
-
     public double getDt() {
         return dt;
-    }
-
-    public WalmartStateEstimator getEstimator() {
-        return estimator;
     }
 
     public Drive getDrive() {
@@ -121,21 +96,6 @@ public class Robot extends OpMode {
 
     public IntakeOuttake getIo() {
         return io;
-    }
-
-    public boolean followPath(Profile profile) {
-        if (currDriveProfile == null) {
-            currDriveProfile = profile;
-            targetPos = getEstimator().getY() + profile.getSetPoint();
-        }
-        driveTime += getDt();
-        if (getDrive().iterativeProfiledDrive(targetPos, tolerance, getEstimator(),
-                currDriveProfile, driveTime, kp, kv, ka)) {
-            currDriveProfile = null;
-            driveTime = 0;
-            return true;
-        }
-        return false;
     }
 
 }

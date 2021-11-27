@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teamNum.subsystems;
+package org.firstinspires.ftc.teamcode.dreamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
@@ -14,14 +14,14 @@ public class Spinner implements Subsystem {
 
     @Override
     public void update(double dt, Telemetry telemetry) {
-        telemetry.addData("Spinner", spinner.getPower());
+        //telemetry.addData("Spinner", spinner.getPower());
     }
 
     public void spin(double pow) {
         spinner.setPower(pow);
     }
 
-    public void setSpin(double pow) {
+    public void capSpin(double pow) {
         spinner.setPower(Math.min(pow, 0.5));
     }
 

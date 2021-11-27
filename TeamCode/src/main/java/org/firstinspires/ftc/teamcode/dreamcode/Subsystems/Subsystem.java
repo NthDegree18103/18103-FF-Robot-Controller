@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.teamNum.states;
+package org.firstinspires.ftc.teamcode.dreamcode.Subsystems;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public interface State {
+public interface Subsystem {
 
     void update(double dt, Telemetry telemetry);
 

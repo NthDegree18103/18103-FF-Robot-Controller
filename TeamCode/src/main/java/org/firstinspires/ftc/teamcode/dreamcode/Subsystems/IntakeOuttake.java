@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teamNum.subsystems;
+package org.firstinspires.ftc.teamcode.dreamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class IntakeOuttake implements Subsystem {
-
 
     DcMotorEx intake;
     Servo servoTest;
@@ -18,7 +17,7 @@ public class IntakeOuttake implements Subsystem {
 
     @Override
     public void update(double dt, Telemetry telemetry) {
-        telemetry.addData("Intake", intake.getPower());
+        //telemetry.addData("Intake", intake.getPower());
         //telemetry.addData("servo position", servoTest.getPosition());
     }
 
@@ -27,6 +26,7 @@ public class IntakeOuttake implements Subsystem {
     }
 
     public void runUpIntake() {intake.setPower(0.75);} //rts
+
     public void runDownIntake() {intake.setPower(-0.75);} //rts
 
     public void runServoRight() {
