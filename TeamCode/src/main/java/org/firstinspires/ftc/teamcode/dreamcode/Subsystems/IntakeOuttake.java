@@ -9,6 +9,7 @@ public class IntakeOuttake implements Subsystem {
 
     DcMotorEx intake;
     Servo servoTest;
+    private int clawState = 0;
 
     public IntakeOuttake(DcMotorEx intake, Servo servoTest) {
         this.intake = intake;
@@ -39,6 +40,37 @@ public class IntakeOuttake implements Subsystem {
 
     public void runServoLeft() {
         servoTest.setPosition(1);
+    }
+
+    public void clawStateManager(boolean left, boolean right) {
+        if (left || right) {
+            if (left) {
+                clawState = Math.max(0, clawState - 1);
+            }
+            if (right) {
+                clawState = Math.min(2, clawState + 1);
+            }
+            if (clawState == 0) {
+                runServoLeft();
+            } else if (clawState == 2) {
+                runServoRight();
+            } else {
+                runServoMid();
+            }
+        }
+    }
+
+    public void armStateManager(boolean down, boolean up) {
+        if (down || up) {
+            if (down) {
+                runDownIntake();
+            } else {
+                runUpIntake();
+            }
+        }
+        else {
+            runIntake(0);
+        }
     }
 
 }

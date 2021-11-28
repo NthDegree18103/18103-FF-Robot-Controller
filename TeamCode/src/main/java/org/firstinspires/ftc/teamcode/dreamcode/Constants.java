@@ -6,7 +6,8 @@ import org.firstinspires.ftc.teamcode.lib.util.MathFx;
 public final class Constants {
     // Drive Subsystem
     public static final double L = 13.5d; // Wheel Base Separation (in)
-    public static final double R = 2d; // Drive Wheel Radius (in)
+    public static final double B = 16.5d; // Wheel Base Separation (in)
+    public static final double R = 50/25.4; // Drive Wheel Radius (in)
     public static final double COLLISION_THRESHOLD_DELTA_G = 0.5;
 
     // Vuforia Vision

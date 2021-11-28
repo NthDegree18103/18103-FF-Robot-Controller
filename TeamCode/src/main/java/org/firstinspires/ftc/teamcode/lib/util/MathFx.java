@@ -5,6 +5,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.lib.physics.Kinematic;
 
 /*
  * Author: Akhil G
@@ -70,6 +71,10 @@ public class MathFx {
         double slope = (higher - lower);
         double bias = lower - (slope * ((int) time));
         return slope * time + bias;
+    }
+
+    public static Kinematic integrate(double dt, Kinematic cur, Kinematic prev) {
+        return cur.add(prev).scale(0.5 * dt);
     }
 
 }

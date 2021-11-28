@@ -1,14 +1,19 @@
 package org.firstinspires.ftc.teamcode.dreamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.dreamcode.States.DriveStates.IMU;
+import org.firstinspires.ftc.teamcode.dreamcode.States.DriveStates.MKE;
 import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.IntakeOuttake;
 import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Spinner;
+import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.StateEstimator;
 import org.firstinspires.ftc.teamcode.dreamcode.Subsystems.Subsystem;
 
 public class Robot extends OpMode {
@@ -16,12 +21,13 @@ public class Robot extends OpMode {
     Subsystem[] subsystems;
 
     DcMotorEx fl, fr, bl, br, spin, intake;
-    Servo servoTest;
     DcMotorEx[] driveMotors;
+    Servo servoTest;
+    BNO055IMU imu;
     Drive drive;
     Spinner spinner;
     IntakeOuttake io;
-
+    StateEstimator estimator;
     ElapsedTime timer;
     double dt;
 
@@ -30,7 +36,14 @@ public class Robot extends OpMode {
         initDrive();
         initIO();
         initSpinner();
-        subsystems = new Subsystem[]{drive, io, spinner};
+        initStateEstimator();
+        subsystems = new Subsystem[]{drive, io, spinner, estimator};
+        timer = new ElapsedTime();
+    }
+
+    @Override
+    public void start() {
+        timer.reset();
     }
 
     @Override
@@ -82,6 +95,21 @@ public class Robot extends OpMode {
         io = new IntakeOuttake(intake, servoTest);
     }
 
+    public void initStateEstimator() {
+        BNO055IMU.Parameters IMUParameters = new BNO055IMU.Parameters();
+        IMUParameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
+        IMUParameters.temperatureUnit     = BNO055IMU.TempUnit.FARENHEIT;
+        IMUParameters.calibrationDataFile = "BNO055IMUCalibration.json";
+        IMUParameters.loggingEnabled      = true;
+        IMUParameters.loggingTag          = "IMU";
+        IMUParameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator(); //NaiveAccelerationIntegrator();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(IMUParameters);
+
+        estimator = new StateEstimator(new IMU(imu), new MKE(fl, fr, bl, br));
+    }
+
     public double getDt() {
         return dt;
     }
@@ -98,4 +126,7 @@ public class Robot extends OpMode {
         return io;
     }
 
+    public StateEstimator getEstimator() {
+        return estimator;
+    }
 }
