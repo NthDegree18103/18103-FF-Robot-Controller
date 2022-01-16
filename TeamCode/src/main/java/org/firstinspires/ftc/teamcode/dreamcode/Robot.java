@@ -29,6 +29,7 @@ public class Robot extends OpMode {
     IntakeOuttake io;
     StateEstimator estimator;
     ElapsedTime timer;
+    public boolean spinnerState = false;
     double dt;
 
     @Override
