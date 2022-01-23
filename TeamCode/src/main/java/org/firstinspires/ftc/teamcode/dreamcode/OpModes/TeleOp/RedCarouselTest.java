@@ -55,7 +55,7 @@ public class RedCarouselTest extends Robot {
         }
 
         if (spinnerState) {
-            if (setPoint - super.getEstimator().getS() > tolerance) {
+            if (setPoint - super.getEstimator().getS() < tolerance) {
                 double Pe = profile.getPosition(time) - super.getEstimator().getS();
                 double Ve = profile.getVelocity(time) - super.getEstimator().getSdot();
                 double Ae = 0;
@@ -64,7 +64,7 @@ public class RedCarouselTest extends Robot {
             } else {
                 super.getSpinner().capSpin(0);
                 spinnerState = false;
-                setPoint += 12.5*2*Math.PI;
+                setPoint = 12.5*2*Math.PI;
                 timer.reset();
             }
         }

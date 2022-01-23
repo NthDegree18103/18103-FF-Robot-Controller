@@ -50,7 +50,7 @@ public class StateEstimator implements Subsystem, State {
         mke.update(dt, telemetry);
         pos = Kinematic.dataFusion(new Kinematic[]{imu.getPos(), mke.getPos()}, weights);
         pos = pos.add(new Kinematic(x0, y0));
-        a = MathFx.meanDataFusion(new double[]{imu.getA()}, new double[]{1}, a0);
+        a = MathFx.meanDataFusion(new double[]{mke.getA()}, new double[]{1}, a0);
         vel = new Kinematic(mke.getX_dot(), mke.getY_dot());
         telemetry.addData("X: ", pos.X());
         telemetry.addData("Y: ", pos.Y());

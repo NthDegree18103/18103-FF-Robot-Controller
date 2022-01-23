@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.dreamcode.Robot;
 import org.firstinspires.ftc.teamcode.dreamcode.States.DriveMode;
 
+@Disabled
 @TeleOp
 public class RedTeleOpCarousel extends Robot {
     ElapsedTime timer = new ElapsedTime();
