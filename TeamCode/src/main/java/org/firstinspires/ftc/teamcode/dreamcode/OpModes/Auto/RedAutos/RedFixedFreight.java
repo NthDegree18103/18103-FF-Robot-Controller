@@ -80,16 +80,23 @@ public class RedFixedFreight extends Robot {
                 super.getDrive().setDriveMotors(u);
             } else {
                 timer.reset();
-                while (timer.seconds() < .5) {
-                    super.getDrive().setStrafeMotors(-0.3);
-                }
+                //while (timer.seconds() < .5) {
+                //    super.getDrive().setStrafeMotors(-0.3);
+                //}
                 super.getDrive().setDriveMotors(0);
-                timer.reset();
+                //timer.reset();
                 pathStep++;
                 telemetry.addData("PathStep End", (pathStep));
                 telemetry.update();
             }
         } else if (pathStep == 4) {
+            if (super.getEstimator().getX() < 3) {
+                super.getDrive().setStrafeMotors(-0.3);
+            } else {
+                pathStep++;
+                super.getDrive().setDriveMotors(0);
+            }
+        } else if (pathStep == 5) {
             if (timer.seconds() < 3.5) {
                 super.getSpinner().spin(0.4);
             } else {
@@ -101,7 +108,7 @@ public class RedFixedFreight extends Robot {
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
                 super.getSpinner().spin(0);
             }
-        } else if (pathStep == 5) {
+        } else if (pathStep == 6) {
             if (super.getEstimator().getA() > -Math.PI/3.2) {
                 super.getDrive().setRotateMotors(0.5);
             } else {
@@ -111,7 +118,7 @@ public class RedFixedFreight extends Robot {
                 tolerance = 1;
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
             }
-        } else if (pathStep == 6) {
+        } else if (pathStep == 7) {
             telemetry.addData("Error", (setPoint - super.getEstimator().getX()));
             if (setPoint - super.getEstimator().getX() > tolerance) {
                 double Pe = profile.getPosition(time) - super.getEstimator().getX();
