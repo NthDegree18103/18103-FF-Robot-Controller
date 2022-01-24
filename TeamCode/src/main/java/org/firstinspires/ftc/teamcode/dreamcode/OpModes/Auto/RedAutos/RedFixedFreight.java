@@ -90,8 +90,8 @@ public class RedFixedFreight extends Robot {
                 telemetry.update();
             }
         } else if (pathStep == 4) {
-            if (super.getEstimator().getX() < 3) {
-                super.getDrive().setStrafeMotors(-0.3);
+            if (super.getEstimator().getY() < 3.2) {
+                super.getDrive().setStrafeMotors(-0.5);
             } else {
                 pathStep++;
                 super.getDrive().setDriveMotors(0);
