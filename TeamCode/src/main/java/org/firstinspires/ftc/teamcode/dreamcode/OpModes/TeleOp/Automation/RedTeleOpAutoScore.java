@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.dreamcode.OpModes.TeleOp.OldFiles;
+package org.firstinspires.ftc.teamcode.dreamcode.OpModes.TeleOp.Automation;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
 
 @TeleOp
-public class RedTeleOpScoringAuto extends Robot {
+public class RedTeleOpAutoScore extends Robot {
     int scoringState = 0;
     double startPoint = 0, startA = 0, startY = 0;
     ElapsedTime timer= new ElapsedTime();

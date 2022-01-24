@@ -79,13 +79,24 @@ public class RedFreight extends Robot {
                 double u = kp * Pe + kv * Ve + ka * Ae;
                 super.getDrive().setDriveMotors(u);
             } else {
-                super.getDrive().setDriveMotors(0);
-                pathStep++;
                 timer.reset();
+                //while (timer.seconds() < .5) {
+                //    super.getDrive().setStrafeMotors(-0.3);
+                //}
+                super.getDrive().setDriveMotors(0);
+                //timer.reset();
+                pathStep++;
                 telemetry.addData("PathStep End", (pathStep));
                 telemetry.update();
             }
         } else if (pathStep == 4) {
+            if (super.getEstimator().getY() < 3.2) {
+                super.getDrive().setStrafeMotors(-0.5);
+            } else {
+                pathStep++;
+                super.getDrive().setDriveMotors(0);
+            }
+        } else if (pathStep == 5) {
             if (timer.seconds() < 3.5) {
                 super.getSpinner().spin(0.4);
             } else {
@@ -97,8 +108,8 @@ public class RedFreight extends Robot {
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
                 super.getSpinner().spin(0);
             }
-        } else if (pathStep == 5) {
-            if (timer.seconds() < 0.6) {
+        } else if (pathStep == 6) {
+            if (super.getEstimator().getA() > -Math.PI/3.2) {
                 super.getDrive().setRotateMotors(0.5);
             } else {
                 pathStep++;
@@ -107,7 +118,7 @@ public class RedFreight extends Robot {
                 tolerance = 1;
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
             }
-        } else if (pathStep == 6) {
+        } else if (pathStep == 7) {
             telemetry.addData("Error", (setPoint - super.getEstimator().getX()));
             if (setPoint - super.getEstimator().getX() > tolerance) {
                 double Pe = profile.getPosition(time) - super.getEstimator().getX();

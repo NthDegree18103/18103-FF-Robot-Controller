@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.RedAutos;
+package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.OldFiles;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;

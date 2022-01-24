@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.RedAutos;
+package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.OldFiles;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
 
 @Autonomous
-public class RedFixedFreight extends Robot {
+public class RedFreight extends Robot {
 
     int pathStep = 0;
     ElapsedTime timer = new ElapsedTime();
@@ -79,24 +79,13 @@ public class RedFixedFreight extends Robot {
                 double u = kp * Pe + kv * Ve + ka * Ae;
                 super.getDrive().setDriveMotors(u);
             } else {
-                timer.reset();
-                //while (timer.seconds() < .5) {
-                //    super.getDrive().setStrafeMotors(-0.3);
-                //}
                 super.getDrive().setDriveMotors(0);
-                //timer.reset();
                 pathStep++;
+                timer.reset();
                 telemetry.addData("PathStep End", (pathStep));
                 telemetry.update();
             }
         } else if (pathStep == 4) {
-            if (super.getEstimator().getY() < 3.2) {
-                super.getDrive().setStrafeMotors(-0.5);
-            } else {
-                pathStep++;
-                super.getDrive().setDriveMotors(0);
-            }
-        } else if (pathStep == 5) {
             if (timer.seconds() < 3.5) {
                 super.getSpinner().spin(0.4);
             } else {
@@ -108,8 +97,8 @@ public class RedFixedFreight extends Robot {
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
                 super.getSpinner().spin(0);
             }
-        } else if (pathStep == 6) {
-            if (super.getEstimator().getA() > -Math.PI/3.2) {
+        } else if (pathStep == 5) {
+            if (timer.seconds() < 0.6) {
                 super.getDrive().setRotateMotors(0.5);
             } else {
                 pathStep++;
@@ -118,7 +107,7 @@ public class RedFixedFreight extends Robot {
                 tolerance = 1;
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
             }
-        } else if (pathStep == 7) {
+        } else if (pathStep == 6) {
             telemetry.addData("Error", (setPoint - super.getEstimator().getX()));
             if (setPoint - super.getEstimator().getX() > tolerance) {
                 double Pe = profile.getPosition(time) - super.getEstimator().getX();
