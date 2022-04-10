@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.OldFiles;
+package org.firstinspires.ftc.teamcode.dreamcode.OpModes.Auto.BlueAutos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 import org.firstinspires.ftc.teamcode.lib.motion.TrapezoidalMotionProfile;
 
 @Autonomous
-public class RedFreight extends Robot {
+public class BFN1Park extends Robot {
 
     int pathStep = 0;
     ElapsedTime timer = new ElapsedTime();
-    double setPoint = 33, tolerance = 1, kp = 0.5, kv = 1/Motors.GoBILDA_435.getSurfaceVelocity(2), ka = 0;
+    double setPoint = 32, tolerance = 1, kp = 0.5, kv = 1/Motors.GoBILDA_435.getSurfaceVelocity(2), ka = 0;
     Profile profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_435.getSurfaceVelocity(2), 100d);
 
     @Override
@@ -79,15 +79,26 @@ public class RedFreight extends Robot {
                 double u = kp * Pe + kv * Ve + ka * Ae;
                 super.getDrive().setDriveMotors(u);
             } else {
-                super.getDrive().setDriveMotors(0);
-                pathStep++;
                 timer.reset();
+                //while (timer.seconds() < .5) {
+                //    super.getDrive().setStrafeMotors(-0.3);
+                //}
+                super.getDrive().setDriveMotors(0);
+                //timer.reset();
+                pathStep++;
                 telemetry.addData("PathStep End", (pathStep));
                 telemetry.update();
             }
         } else if (pathStep == 4) {
-            if (timer.seconds() < 3.5) {
-                super.getSpinner().spin(0.4);
+            if (super.getEstimator().getY() > -3.2) {
+                super.getDrive().setStrafeMotors(0.5);
+            } else {
+                pathStep++;
+                super.getDrive().setDriveMotors(0);
+            }
+        } else if (pathStep == 5) {
+            if (timer.seconds() < 3.1) {
+                super.getSpinner().spin(-0.4);
             } else {
                 pathStep++;
                 //telemetry.addData("PathStep", (pathStep));
@@ -97,17 +108,17 @@ public class RedFreight extends Robot {
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
                 super.getSpinner().spin(0);
             }
-        } else if (pathStep == 5) {
-            if (timer.seconds() < 0.6) {
+        } else if (pathStep == 6) {
+            if (super.getEstimator().getA() > -Math.PI/2.8) {
                 super.getDrive().setRotateMotors(0.5);
             } else {
                 pathStep++;
                 super.getDrive().setDriveMotors(0);
-                setPoint = 85;
+                setPoint = 8;
                 tolerance = 1;
                 profile = new TrapezoidalMotionProfile(setPoint, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
             }
-        } else if (pathStep == 6) {
+        } else if (pathStep == 7) {
             telemetry.addData("Error", (setPoint - super.getEstimator().getX()));
             if (setPoint - super.getEstimator().getX() > tolerance) {
                 double Pe = profile.getPosition(time) - super.getEstimator().getX();
