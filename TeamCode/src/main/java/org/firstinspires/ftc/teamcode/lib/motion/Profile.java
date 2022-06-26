@@ -18,6 +18,8 @@ public abstract class Profile {
 
     public abstract double getSetPoint();
 
+    public abstract double getDirection();
+
     //public abstract ProfileState getProfileState(double timeStamp);
 
     /*

@@ -28,8 +28,8 @@ public final class Constants {
             CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT, phoneXRotate, phoneYRotate,
             phoneZRotate);
 
-    public static double turnScaling = 1;
-    public static double strafeScaling = 1.5;
+    public static double turnScaling = 0.5;
+    public static double strafeScaling = 1;
     //public static final double drivePIDMagicNumber = 9.2;
 
 }

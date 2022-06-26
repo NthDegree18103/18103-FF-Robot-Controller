@@ -106,6 +106,11 @@ public class VibrationReducingTrapezoidalMotionProfile extends Profile {
     }
 
     @Override
+    public double getDirection() {
+        return direction;
+    }
+
+    @Override
     public ProfileState getState(double timeStamp) {
         timeStamp = MathFx.scale(0, timeStamp, timeStamp);
         int timeStep = (int)(timeStamp/dt);
@@ -127,8 +132,8 @@ public class VibrationReducingTrapezoidalMotionProfile extends Profile {
         if (distance < 0) {
             direction = -1;
         }
-        maxV *= direction;
-        maxA *= direction;
+        this.maxV *= direction;
+        this.maxA *= direction;
     }
 
     public void setTime() {

@@ -22,6 +22,14 @@ public class TrapezoidalMotionProfile extends Profile {
         generateProfile();
     }
 
+    public TrapezoidalMotionProfile(double distance) {
+        setDistance(distance);
+        setKinematics(Motors.GoBILDA_435.getSurfaceVelocity(2), 100d);
+        setTime();
+        setLists();
+        generateProfile();
+    }
+
     public static void main(String[] args) {
         TrapezoidalMotionProfile profile = new TrapezoidalMotionProfile(3*24, Motors.GoBILDA_312.getSurfaceVelocity(2), 100d);
         for (int i = 0; i* 0.001 < profile.getT_total(); i++) {
@@ -116,6 +124,10 @@ public class TrapezoidalMotionProfile extends Profile {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public double getDirection() {
+        return direction;
     }
 
     public void setKinematics(double maxV, double maxA) {

@@ -6,4 +6,6 @@ public interface Subsystem {
 
     void update(double dt, Telemetry telemetry);
 
+    void stop();
+
 }

@@ -63,6 +63,11 @@ public class StateEstimator implements Subsystem, State {
         }
     }
 
+    @Override
+    public void stop() {
+
+    }
+
     public void zero() {
         a0 = -a;
         x0 = -pos.X();

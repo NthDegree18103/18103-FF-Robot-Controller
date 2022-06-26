@@ -17,6 +17,11 @@ public class Spinner implements Subsystem {
         //telemetry.addData("Spinner", spinner.getPower());
     }
 
+    @Override
+    public void stop() {
+        spin(0);
+    }
+
     public void spin(double pow) {
         spinner.setPower(pow);
     }

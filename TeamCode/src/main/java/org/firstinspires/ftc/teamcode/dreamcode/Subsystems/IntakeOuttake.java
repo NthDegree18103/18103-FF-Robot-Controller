@@ -22,6 +22,11 @@ public class IntakeOuttake implements Subsystem {
         //telemetry.addData("servo position", servoTest.getPosition());
     }
 
+    @Override
+    public void stop() {
+        runIntake(0);
+    }
+
     public void runIntake(double pow) {
         intake.setPower(pow);
     }

@@ -130,4 +130,13 @@ public class Robot extends OpMode {
     public StateEstimator getEstimator() {
         return estimator;
     }
+
+    public void stopRobot(){
+        for (Subsystem system: subsystems) {
+            system.stop();
+        }
+    }
+
+
+
 }

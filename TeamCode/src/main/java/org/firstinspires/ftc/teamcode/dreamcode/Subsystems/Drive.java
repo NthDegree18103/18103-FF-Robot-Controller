@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.dreamcode.Constants;
 import org.firstinspires.ftc.teamcode.dreamcode.States.DriveMode;
+import org.firstinspires.ftc.teamcode.lib.drivers.Motors;
+import org.firstinspires.ftc.teamcode.lib.motion.Profile;
 
 import java.util.Arrays;
 
@@ -15,6 +17,7 @@ public class Drive implements Subsystem {
     DcMotorEx bl;
     DcMotorEx br;
     DcMotorEx[] driveMotors;
+    double kp = 0.5, kv = 1/Motors.GoBILDA_435.getSurfaceVelocity(2), ka = 0;
 
     public Drive(DcMotorEx fl, DcMotorEx fr, DcMotorEx bl, DcMotorEx br) {
         this.fl = fl;
@@ -28,6 +31,11 @@ public class Drive implements Subsystem {
     @Override
     public void update(double dt, Telemetry telemetry) {
 
+    }
+
+    @Override
+    public void stop() {
+        setDriveMotors(0);
     }
 
     /**
@@ -70,19 +78,17 @@ public class Drive implements Subsystem {
      * @param mode Drivetrain Speed Setting (Sport, Normal, Economy)
      */
     public void POVMecanumDrive(double y, double x, double turn, DriveMode mode) {
-        turn *= 0.5; //Custom reduction bc it was requested.
         double v1 = -(y - (turn * Constants.strafeScaling) - (x/Constants.turnScaling));
         double v2 = -(y - (turn * Constants.strafeScaling) + (x/Constants.turnScaling));
         double v3 = -(y + (turn * Constants.strafeScaling) - (x/Constants.turnScaling));
         double v4 = -(y + (turn * Constants.strafeScaling) + (x/Constants.turnScaling));
 
-        Double[] v = new Double[]{Math.abs(v1), Math.abs(v2), Math.abs(v3), Math.abs(v4)};
-        Arrays.sort(v);
-        if (v[3] > 1) {
-            v1 /= v[3];
-            v2 /= v[3];
-            v3 /= v[3];
-            v4 /= v[3];
+        double v = Math.max(Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.abs(v3)), Math.abs(v4));
+        if (v > 1) {
+            v1 /= v;
+            v2 /= v;
+            v3 /= v;
+            v4 /= v;
         }
 
         fl.setPower(v1 * mode.getScaling());
@@ -91,4 +97,19 @@ public class Drive implements Subsystem {
         fr.setPower(v4 * mode.getScaling());
     }
 
+
+    public boolean pathFollower(StateEstimator robot, Profile profile, double tolerance, double time) {
+        double setPoint = profile.getSetPoint();
+        if (setPoint - robot.getX() > tolerance) {
+            double Pe = profile.getPosition(time) - robot.getX();
+            double Ve = profile.getVelocity(time) - robot.getX_dot();
+            double Ae = 0;//profile.getAcceleration(time) - super.getEstimator().getY_dDot();
+            double u = kp * Pe + kv * Ve + ka * Ae;
+            setDriveMotors(u);
+            return false;
+        } else {
+            stop();
+            return true;
+        }
+    }
 }
